@@ -18,3 +18,27 @@ def detailview(request, pk):
     tasks = Task.objects.get(pk=pk)
     serializer = TaskSerializer(tasks, many=False)
     return Response(serializer.data)
+
+
+@api_view(['POST'])
+def CreateView(request):
+    serializers = TaskSerializer(data=request.data)
+    if serializers.is_valid():
+        serializers.save()
+    return Response(serializers.data)
+
+
+@api_view(['POST'])
+def UpdateView(request, pk):
+    tasks = Task.objects.get(pk=pk)
+    serializers = TaskSerializer(data=request.data, instance=tasks)
+    if serializers.is_valid():
+        serializers.save()
+    return Response(serializers.data)
+
+
+@api_view(['Delete'])
+def deleteView(request, pk):
+    tasks = Task.objects.get(pk=pk)
+    tasks.delete()
+    return Response('Delete SuccessFully')
